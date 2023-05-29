@@ -8,7 +8,7 @@ const LEVELS = [
   { title: "space", image: spaceImg },
 ];
 
-export function LevelSelectPage() {
+export function LevelSelectPage({ handleChooseLevel }) {
   return (
     <main className='flex py-10 px-28'>
       <div className='w-1/3'>
@@ -29,12 +29,13 @@ export function LevelSelectPage() {
           <div
             key={index}
             id={level.title}
-            className='w-[85%] p-12 rounded-lg opacity-70 hover:opacity-100 mb-6'
+            className='w-[85%] p-12 rounded-lg opacity-70 hover:opacity-100 mb-6 cursor-pointer'
             style={{
               backgroundImage: `url(${level.image})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
+            onClick={() => handleChooseLevel(level.title)}
           >
             <h1 className=' text-primary text-6xl font-bold capitalize'>
               {level.title}
