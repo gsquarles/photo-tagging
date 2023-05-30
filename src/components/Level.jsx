@@ -1,18 +1,46 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { POSITIONS } from "../App";
+import waldoHead from "../imgs/waldoIcon.png";
+import whitebeardHead from "../imgs/whitebeardIcon.png";
+import odlawHead from "../imgs/odlawIcon.png";
+import wendaHead from "../imgs/wendaIcon.png";
+import { ClickedLayout } from "./clickedLayout";
+import { CharactersDisplay } from "./CharactersDisplay";
 
 export function Level({ image, title }) {
   const [time, setTime] = useState(0);
+  const [characterList, setCharacterList] = useState([
+    { id: 1, name: "waldo", icon: waldoHead, isFound: false },
+    { id: 2, name: "whitebeard", icon: whitebeardHead, isFound: false },
+    { id: 3, name: "odlaw", icon: odlawHead, isFound: false },
+    { id: 4, name: "wenda", icon: wendaHead, isFound: false },
+  ]);
+
+  const [clickedPosition, setClickedPosition] = useState({ x: 0, y: 0 });
+  const [showClickedLayout, setShowClickedLayout] = useState(false);
+  const intervalRef = useRef(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    intervalRef.current = setInterval(() => {
       setTime((prevTime) => prevTime + 1);
     }, 1000);
 
     return () => {
-      clearInterval(interval);
+      clearInterval(intervalRef.current);
     };
   }, []);
+
+  useEffect(() => {
+    // Check if all characters are found
+    const allCharactersFound = characterList.every(
+      (character) => character.isFound
+    );
+
+    if (allCharactersFound) {
+      console.log("Game over");
+      clearInterval(intervalRef.current);
+    }
+  }, [characterList]);
 
   const formatTime = (timeInSeconds) => {
     const hours = Math.floor(timeInSeconds / 3600);
@@ -28,21 +56,11 @@ export function Level({ image, title }) {
 
   const handleCharacterClick = (event) => {
     const { offsetX, offsetY } = event.nativeEvent;
-    const image = event.target;
-    const imageWidth = image.naturalWidth;
-    const imageHeight = image.naturalHeight;
-    const displayWidth = image.clientWidth;
-    const displayHeight = image.clientHeight;
 
-    // Calculate scaling factors for x and y coordinates
-    const scaleX = imageWidth / displayWidth;
-    const scaleY = imageHeight / displayHeight;
+    setClickedPosition({ x: offsetX, y: offsetY });
+    setShowClickedLayout(true);
 
-    // Adjust the clicked coordinates based on scaling factors
-    const clickedX = Math.floor(offsetX * scaleX);
-    const clickedY = Math.floor(offsetY * scaleY);
-
-    console.log("Clicked coordinates:", clickedX, clickedY);
+    console.log("Clicked coordinates:", offsetX, offsetY);
     const levelPositions = POSITIONS.find(
       (position) => position.level === title
     );
@@ -51,46 +69,59 @@ export function Level({ image, title }) {
       const clickedCharacter = levelPositions.characters.find((character) => {
         const { xCord1, yCord1, xCord2, yCord2 } = character;
         return (
-          clickedX >= xCord1 &&
-          clickedX <= xCord2 &&
-          clickedY >= yCord1 &&
-          clickedY <= yCord2
+          offsetX >= xCord1 &&
+          offsetX <= xCord2 &&
+          offsetY >= yCord1 &&
+          offsetY <= yCord2
         );
       });
-
-      if (clickedCharacter) {
-        console.log("Good job!", clickedCharacter.name);
-      } else {
-        console.log("Try again!");
-      }
     }
   };
 
   return (
-    <div style={{ position: "relative" }}>
-      <div
-        style={{
-          position: "absolute",
-          top: "3%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          zIndex: 1,
-        }}
-      >
-        <p className='inline-block bg-primary text-white py-2 px-4 text-lg rounded-full opacity-75'>
-          {formatTime(time)}
-        </p>
+    <>
+      <div style={{ position: "relative", width: "1600px", height: "1000px" }}>
+        <div
+          style={{
+            position: "absolute",
+            top: "3%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 1,
+          }}
+        >
+          <p className='inline-block bg-primary text-white py-2 px-4 text-lg rounded-full opacity-75'>
+            {formatTime(time)}
+          </p>
+        </div>
+        <div style={{ position: "relative" }} className='cursor-crosshair'>
+          <img
+            src={image}
+            style={{ width: "100%", height: "100%", zIndex: 0 }}
+            useMap='#charactersMap'
+            onClick={handleCharacterClick}
+          />
+          <map name='charactersMap'></map>
+        </div>
       </div>
-      <div style={{ position: "relative" }}>
-        {" "}
-        <img
-          src={image}
-          style={{ width: "100%", height: "100%", zIndex: 0 }}
-          useMap='#charactersMap'
-          onClick={handleCharacterClick}
-        />
-        <map name='charactersMap'></map>
-      </div>
-    </div>
+      <CharactersDisplay characterList={characterList} />
+      {showClickedLayout && (
+        <div
+          style={{
+            position: "absolute",
+            left: `${clickedPosition.x - 20}px `,
+            top: `${clickedPosition.y + 110}px`,
+          }}
+        >
+          <ClickedLayout
+            characterList={characterList}
+            setCharacterList={setCharacterList}
+            clickedPosition={clickedPosition}
+            title={title}
+            setShowClickedLayout={setShowClickedLayout}
+          />
+        </div>
+      )}
+    </>
   );
 }

@@ -28,46 +28,46 @@ export const POSITIONS = [
   {
     level: "beach",
     characters: [
-      { name: "waldo", xCord1: 1817, yCord1: 689, xCord2: 1888, yCord2: 797 },
+      { name: "waldo", xCord1: 980, yCord1: 377, xCord2: 1005, yCord2: 413 },
       {
         name: "whitebeard",
-        xCord1: 776,
-        yCord1: 646,
-        xCord2: 838,
-        yCord2: 739,
+        xCord1: 426,
+        yCord1: 356,
+        xCord2: 445,
+        yCord2: 386,
       },
-      { name: "odlaw", xCord1: 298, yCord1: 652, xCord2: 341, yCord2: 714 },
-      { name: "wenda", xCord1: 2297, yCord1: 757, xCord2: 2340, yCord2: 819 },
+      { name: "odlaw", xCord1: 165, yCord1: 355, xCord2: 182, yCord2: 388 },
+      { name: "wenda", xCord1: 1230, yCord1: 410, xCord2: 1245, yCord2: 451 },
     ],
   },
   {
     level: "stadium",
     characters: [
-      { name: "waldo", xCord1: 791, yCord1: 593, xCord2: 892, yCord2: 707 },
+      { name: "waldo", xCord1: 431, yCord1: 329, xCord2: 469, yCord2: 368 },
       {
         name: "whitebeard",
-        xCord1: 1806,
-        yCord1: 1586,
-        xCord2: 1867,
-        yCord2: 1732,
+        xCord1: 973,
+        yCord1: 856,
+        xCord2: 988,
+        yCord2: 904,
       },
-      { name: "odlaw", xCord1: 1761, yCord1: 1189, xCord2: 1825, yCord2: 1277 },
-      { name: "wenda", xCord1: 722, yCord1: 1335, xCord2: 783, yCord2: 1428 },
+      { name: "odlaw", xCord1: 953, yCord1: 639, xCord2: 971, yCord2: 685 },
+      { name: "wenda", xCord1: 394, yCord1: 724, xCord2: 409, yCord2: 748 },
     ],
   },
   {
     level: "space",
     characters: [
-      { name: "waldo", xCord1: 1186, yCord1: 1206, xCord2: 1239, yCord2: 1283 },
+      { name: "waldo", xCord1: 642, yCord1: 652, xCord2: 659, yCord2: 669 },
       {
         name: "whitebeard",
-        xCord1: 2312,
-        yCord1: 1100,
-        xCord2: 2365,
-        yCord2: 1193,
+        xCord1: 1242,
+        yCord1: 598,
+        xCord2: 1261,
+        yCord2: 616,
       },
-      { name: "odlaw", xCord1: 179, yCord1: 1326, xCord2: 242, yCord2: 1405 },
-      { name: "wenda", xCord1: 863, yCord1: 989, xCord2: 910, yCord2: 1076 },
+      { name: "odlaw", xCord1: 105, yCord1: 719, xCord2: 124, yCord2: 743 },
+      { name: "wenda", xCord1: 466, yCord1: 535, xCord2: 482, yCord2: 559 },
     ],
   },
 ];
@@ -82,7 +82,10 @@ function App() {
 
   return (
     <>
-      <Header setSelectedLevel={setSelectedLevel} />
+      <Header
+        setSelectedLevel={setSelectedLevel}
+        selectedLevel={selectedLevel}
+      />
       {selectedLevel ? (
         <Level image={selectedLevel.image} title={selectedLevel.title} />
       ) : (
