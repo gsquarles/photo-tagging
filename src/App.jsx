@@ -10,17 +10,17 @@ import { Scoreboards } from "./components/Scoreboards";
 const LEVELS = [
   {
     id: 1,
-    title: "beach",
+    level: "beach",
     image: beachImg,
   },
   {
     id: 2,
-    title: "stadium",
+    level: "stadium",
     image: stadiumImg,
   },
   {
     id: 3,
-    title: "space",
+    level: "space",
     image: spaceImg,
   },
 ];
@@ -79,24 +79,48 @@ function App() {
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [isLevelSelectPageShown, setIsLevelSelectPageShown] = useState(true);
   const [scores, setScores] = useState([
-    { name: "john", score: 24 },
-    { name: "bill", score: 107 },
-    { name: "pearl", score: 10 },
-    { name: "lucas", score: 222 },
-    { name: "riley", score: 213 },
-    { name: "el charro", score: 104 },
+    {
+      level: "beach",
+      players: [
+        { name: "john", time: 24 },
+        { name: "bill", time: 107 },
+        { name: "pearl", time: 109 },
+        { name: "jen", time: 100 },
+        { name: "blue", time: 202 },
+      ],
+    },
+    {
+      level: "stadium",
+      players: [
+        { name: "john", time: 24 },
+        { name: "bill", time: 107 },
+        { name: "pearl", time: 10 },
+      ],
+    },
+    {
+      level: "space",
+      players: [
+        { name: "john", time: 24 },
+        { name: "bill", time: 107 },
+        { name: "pearl", time: 10 },
+      ],
+    },
   ]);
   const [isHighScoresSelected, setIsHighScoresSelected] = useState(false);
 
   const handleChooseLevel = (id) => {
-    const selected = LEVELS.find((level) => level.title === id);
+    const selected = LEVELS.find((level) => level.level === id);
     setSelectedLevel(selected);
     setIsLevelSelectPageShown(false);
   };
 
   return (
     <ScoreContext.Provider
-      value={{ setIsLevelSelectPageShown, setSelectedLevel }}
+      value={{
+        setIsLevelSelectPageShown,
+        setSelectedLevel,
+        setIsHighScoresSelected,
+      }}
     >
       <Header
         setSelectedLevel={setSelectedLevel}
@@ -110,12 +134,20 @@ function App() {
       {selectedLevel && (
         <Level
           image={selectedLevel.image}
-          title={selectedLevel.title}
+          level={selectedLevel.level}
           scores={scores}
           setScores={setScores}
         />
       )}
-      {isHighScoresSelected && <Scoreboards />}
+      {isHighScoresSelected && (
+        <Scoreboards
+          beachScores={scores.find((score) => score.level === "beach").players}
+          stadiumScores={
+            scores.find((score) => score.level === "stadium").players
+          }
+          spaceScores={scores.find((score) => score.level === "space").players}
+        />
+      )}
     </ScoreContext.Provider>
   );
 }

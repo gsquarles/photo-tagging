@@ -9,7 +9,7 @@ export function ClickedLayout({
   characterList,
   setCharacterList,
   clickedPosition,
-  title,
+  level,
   setShowClickedLayout,
 }) {
   const handleCharacterSelection = (characterId) => {
@@ -41,7 +41,7 @@ export function ClickedLayout({
 
   const checkCharacterFound = (characterName, x, y) => {
     const levelPositions = POSITIONS.find(
-      (position) => position.level === title
+      (position) => position.level === level
     );
 
     if (levelPositions) {

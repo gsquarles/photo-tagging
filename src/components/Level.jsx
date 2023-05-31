@@ -7,8 +7,9 @@ import wendaHead from "../imgs/wendaIcon.png";
 import { ClickedLayout } from "./clickedLayout";
 import { CharactersDisplay } from "./CharactersDisplay";
 import { HighScoreForm } from "./HighScoreForm";
+import { formatTime, padNumber } from "../utilities/helpers";
 
-export function Level({ image, title, scores, setScores }) {
+export function Level({ image, level, scores, setScores }) {
   const [time, setTime] = useState(0);
   const [characterList, setCharacterList] = useState([
     { id: 1, name: "waldo", icon: waldoHead, isFound: false },
@@ -45,18 +46,6 @@ export function Level({ image, title, scores, setScores }) {
     }
   }, [characterList]);
 
-  const formatTime = (timeInSeconds) => {
-    const hours = Math.floor(timeInSeconds / 3600);
-    const minutes = Math.floor((timeInSeconds % 3600) / 60);
-    const seconds = timeInSeconds % 60;
-
-    return `${padNumber(hours)}:${padNumber(minutes)}:${padNumber(seconds)}`;
-  };
-
-  const padNumber = (number) => {
-    return number.toString().padStart(2, "0");
-  };
-
   const handleCharacterClick = (event) => {
     const { offsetX, offsetY } = event.nativeEvent;
 
@@ -65,7 +54,7 @@ export function Level({ image, title, scores, setScores }) {
 
     // console.log("Clicked coordinates:", offsetX, offsetY);
     const levelPositions = POSITIONS.find(
-      (position) => position.level === title
+      (position) => position.level === level
     );
 
     if (levelPositions) {
@@ -121,7 +110,7 @@ export function Level({ image, title, scores, setScores }) {
             characterList={characterList}
             setCharacterList={setCharacterList}
             clickedPosition={clickedPosition}
-            title={title}
+            level={level}
             setShowClickedLayout={setShowClickedLayout}
           />
         </div>
@@ -132,6 +121,7 @@ export function Level({ image, title, scores, setScores }) {
           scores={scores}
           setScores={setScores}
           setIsGameOver={setIsGameOver}
+          level={level}
         />
       )}
     </>
