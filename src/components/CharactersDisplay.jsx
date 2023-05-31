@@ -19,13 +19,13 @@ export function CharactersDisplay({ characterList }) {
           <li
             key={character.id}
             className={`w-20 flex flex-col items-center justify-center mb-2 cursor-pointer hover:scale-105 ${
-              character.isFound ? "opacity-50" : ""
+              character.isFound ? "opacity-85" : ""
             }`}
             onClick={() => handleCharacterSelection(character.id)}
           >
             <div
-              className={`border-4 p-1 rounded-full bg-red-500 ${
-                character.isFound ? "border-green-600" : "border-white"
+              className={`border-4 p-1 rounded-full  border-white ${
+                character.isFound ? "bg-green-600" : "bg-red-500"
               }`}
             >
               <img src={character.icon} className='w-full h-full' />

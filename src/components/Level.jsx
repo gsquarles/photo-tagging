@@ -6,8 +6,9 @@ import odlawHead from "../imgs/odlawIcon.png";
 import wendaHead from "../imgs/wendaIcon.png";
 import { ClickedLayout } from "./clickedLayout";
 import { CharactersDisplay } from "./CharactersDisplay";
+import { HighScoreForm } from "./HighScoreForm";
 
-export function Level({ image, title }) {
+export function Level({ image, title, scores, setScores }) {
   const [time, setTime] = useState(0);
   const [characterList, setCharacterList] = useState([
     { id: 1, name: "waldo", icon: waldoHead, isFound: false },
@@ -19,6 +20,7 @@ export function Level({ image, title }) {
   const [clickedPosition, setClickedPosition] = useState({ x: 0, y: 0 });
   const [showClickedLayout, setShowClickedLayout] = useState(false);
   const intervalRef = useRef(null);
+  const [isGameOver, setIsGameOver] = useState(false);
 
   useEffect(() => {
     intervalRef.current = setInterval(() => {
@@ -38,6 +40,7 @@ export function Level({ image, title }) {
 
     if (allCharactersFound) {
       console.log("Game over");
+      setIsGameOver(true);
       clearInterval(intervalRef.current);
     }
   }, [characterList]);
@@ -60,7 +63,7 @@ export function Level({ image, title }) {
     setClickedPosition({ x: offsetX, y: offsetY });
     setShowClickedLayout(true);
 
-    console.log("Clicked coordinates:", offsetX, offsetY);
+    // console.log("Clicked coordinates:", offsetX, offsetY);
     const levelPositions = POSITIONS.find(
       (position) => position.level === title
     );
@@ -96,6 +99,7 @@ export function Level({ image, title }) {
         </div>
         <div style={{ position: "relative" }} className='cursor-crosshair'>
           <img
+            className={`${isGameOver ? "bg-gray-500 opacity-30" : ""}`}
             src={image}
             style={{ width: "100%", height: "100%", zIndex: 0 }}
             useMap='#charactersMap'
@@ -121,6 +125,14 @@ export function Level({ image, title }) {
             setShowClickedLayout={setShowClickedLayout}
           />
         </div>
+      )}
+      {isGameOver && (
+        <HighScoreForm
+          time={time}
+          scores={scores}
+          setScores={setScores}
+          setIsGameOver={setIsGameOver}
+        />
       )}
     </>
   );

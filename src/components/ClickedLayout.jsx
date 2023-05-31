@@ -23,6 +23,7 @@ export function ClickedLayout({
 
       if (isCharacterFound) {
         console.log("Good job!", clickedCharacter.name);
+
         setCharacterList((prevList) =>
           prevList.map((character) =>
             character.id === characterId
@@ -70,19 +71,21 @@ export function ClickedLayout({
           <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-2 '></div>
           <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-10 '></div>
         </li>
-        {characterList.map((character) => (
-          <li
-            key={character.id}
-            className={`w-14 flex items-center justify-center ml-1 cursor-pointer hover:scale-105 ${
-              character.isFound ? "opacity-50" : ""
-            }`}
-            onClick={() => handleCharacterSelection(character.id)}
-          >
-            <div className='border-4 border-red-500 p-1 rounded-full'>
-              <img src={character.icon} className='w-full h-full' />
-            </div>
-          </li>
-        ))}
+        {characterList.map((character) =>
+          character.isFound ? null : (
+            <li
+              key={character.id}
+              className={`w-14 flex items-center justify-center ml-1 cursor-pointer hover:scale-105 ${
+                character.isFound ? "opacity-50" : ""
+              }`}
+              onClick={() => handleCharacterSelection(character.id)}
+            >
+              <div className='border-4 border-red-500 p-1 rounded-full'>
+                <img src={character.icon} className='w-full h-full' />
+              </div>
+            </li>
+          )
+        )}
       </ul>
     </div>
   );

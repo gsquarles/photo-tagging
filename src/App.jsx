@@ -3,8 +3,9 @@ import { LevelSelectPage } from "./components/LevelSelectPage";
 import beachImg from "./imgs/beachLarge.jpg";
 import stadiumImg from "./imgs/stadiumLarge.jpg";
 import spaceImg from "./imgs/spaceLarge.jpg";
-import { useState } from "react";
+import { createContext, useState } from "react";
 import { Level } from "./components/Level";
+import { Scoreboards } from "./components/Scoreboards";
 
 const LEVELS = [
   {
@@ -72,26 +73,50 @@ export const POSITIONS = [
   },
 ];
 
+export const ScoreContext = createContext();
+
 function App() {
   const [selectedLevel, setSelectedLevel] = useState(null);
+  const [isLevelSelectPageShown, setIsLevelSelectPageShown] = useState(true);
+  const [scores, setScores] = useState([
+    { name: "john", score: 24 },
+    { name: "bill", score: 107 },
+    { name: "pearl", score: 10 },
+    { name: "lucas", score: 222 },
+    { name: "riley", score: 213 },
+    { name: "el charro", score: 104 },
+  ]);
+  const [isHighScoresSelected, setIsHighScoresSelected] = useState(false);
 
   const handleChooseLevel = (id) => {
     const selected = LEVELS.find((level) => level.title === id);
     setSelectedLevel(selected);
+    setIsLevelSelectPageShown(false);
   };
 
   return (
-    <>
+    <ScoreContext.Provider
+      value={{ setIsLevelSelectPageShown, setSelectedLevel }}
+    >
       <Header
         setSelectedLevel={setSelectedLevel}
         selectedLevel={selectedLevel}
+        setIsSelectedLevelPageShown={setIsLevelSelectPageShown}
+        setIsHighScoresSelected={setIsHighScoresSelected}
       />
-      {selectedLevel ? (
-        <Level image={selectedLevel.image} title={selectedLevel.title} />
-      ) : (
+      {isLevelSelectPageShown && (
         <LevelSelectPage handleChooseLevel={handleChooseLevel} />
       )}
-    </>
+      {selectedLevel && (
+        <Level
+          image={selectedLevel.image}
+          title={selectedLevel.title}
+          scores={scores}
+          setScores={setScores}
+        />
+      )}
+      {isHighScoresSelected && <Scoreboards />}
+    </ScoreContext.Provider>
   );
 }
 
