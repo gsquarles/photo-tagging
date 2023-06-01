@@ -3,7 +3,10 @@ This project is a react Where's Wally app.  I hooked this project up to firebase
 
 [Live Project Link ](photo-tagging-c233a.firebaseapp.com)
 ## Skills Used
--React 
--Tailwind 
--Firebase 
--Firestore
+- React 
+
+- Tailwind 
+
+- Firebase 
+
+- Firestore
