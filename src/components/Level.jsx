@@ -4,7 +4,7 @@ import waldoHead from "../imgs/waldoIcon.png";
 import whitebeardHead from "../imgs/whitebeardIcon.png";
 import odlawHead from "../imgs/odlawIcon.png";
 import wendaHead from "../imgs/wendaIcon.png";
-import { ClickedLayout } from "./clickedLayout";
+import { ClickedLayout } from "./ClickedLayout";
 import { CharactersDisplay } from "./CharactersDisplay";
 import { HighScoreForm } from "./HighScoreForm";
 import { formatTime, padNumber } from "../utilities/helpers";
