@@ -37,10 +37,10 @@ export function HighScoreForm({ time, setIsGameOver, level }) {
 
   return (
     <form
-      className='bg-white py-8 px-6 text-center rounded-xl flex flex-col items-center'
+      className='bg-white py-8 px-8 text-center rounded-xl flex flex-col items-center'
       style={{
         position: "fixed",
-        top: "45%",
+        top: "47%",
         left: "50%",
         transform: "translate(-50%, -50%)",
       }}
@@ -49,7 +49,9 @@ export function HighScoreForm({ time, setIsGameOver, level }) {
       <h1 className='font-bold text-2xl mb-2'>
         Congratulations, you found all the characters!
       </h1>
-      <p className='text-xl mb-5'>Add your time to the high scores table:</p>
+      <p className='text-xl mb-5'>
+        Add your name and see if you made the high scores table:
+      </p>
       <div
         className='w-3/5 mb-10'
         style={{ display: "flex", flexDirection: "column" }}
