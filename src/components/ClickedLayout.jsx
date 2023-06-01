@@ -11,6 +11,7 @@ export function ClickedLayout({
   clickedPosition,
   level,
   setShowClickedLayout,
+  setCharacterNotFound,
 }) {
   const handleCharacterSelection = (characterId) => {
     const clickedCharacter = characterList.find(
@@ -22,8 +23,6 @@ export function ClickedLayout({
       const isCharacterFound = checkCharacterFound(clickedCharacter.name, x, y);
 
       if (isCharacterFound) {
-        console.log("Good job!", clickedCharacter.name);
-
         setCharacterList((prevList) =>
           prevList.map((character) =>
             character.id === characterId
@@ -35,6 +34,10 @@ export function ClickedLayout({
       } else {
         console.log("Try again!");
         setShowClickedLayout(false);
+        setCharacterNotFound(true);
+        setTimeout(() => {
+          setCharacterNotFound(false);
+        }, 2000);
       }
     }
   };

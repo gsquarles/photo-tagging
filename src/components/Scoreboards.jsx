@@ -1,6 +1,32 @@
 import { formatTime, padNumber } from "../utilities/helpers";
+import { db } from "../firebase";
+import { collection, getDocs } from "firebase/firestore";
+import { useEffect, useState } from "react";
 
-export function Scoreboards({ beachScores, stadiumScores, spaceScores }) {
+export function Scoreboards() {
+  const [beachScores, setBeachScores] = useState([]);
+  const [stadiumScores, setStadiumScore] = useState([]);
+  const [spaceScores, setSpaceScore] = useState([]);
+
+  useEffect(() => {
+    async function fetchScores() {
+      try {
+        const beachSnapshot = await getDocs(collection(db, "beach"));
+        const beachCollection = beachSnapshot.docs.map((doc) => doc.data());
+        const stadiumSnapshot = await getDocs(collection(db, "stadium"));
+        const stadiumCollection = stadiumSnapshot.docs.map((doc) => doc.data());
+        const spaceSnapshot = await getDocs(collection(db, "space"));
+        const spaceCollection = spaceSnapshot.docs.map((doc) => doc.data());
+        setBeachScores(beachCollection);
+        setStadiumScore(stadiumCollection);
+        setSpaceScore(spaceCollection);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    fetchScores();
+  }, []);
   const getSortedAndSlicedScores = (scores) =>
     [...scores].sort((a, b) => a.time - b.time).slice(0, 5);
 

@@ -9,6 +9,7 @@ export function Header({
   function handleHomePageClick() {
     setSelectedLevel(null);
     setIsSelectedLevelPageShown(true);
+    setIsHighScoresSelected(false);
   }
 
   function handleHighScoresClick() {

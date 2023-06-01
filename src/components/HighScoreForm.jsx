@@ -1,14 +1,11 @@
 import { useContext, useRef } from "react";
 import { ScoreContext } from "../App";
+import { db } from "../firebase";
+import { addDoc, collection } from "firebase/firestore";
 
-export function HighScoreForm({
-  time,
-  scores,
-  setScores,
-  setIsGameOver,
-  level,
-}) {
+export function HighScoreForm({ time, setIsGameOver, level }) {
   const inputRef = useRef(null);
+  const ref = collection(db, level);
   const {
     setIsLevelSelectPageShown,
     setSelectedLevel,
@@ -21,23 +18,16 @@ export function HighScoreForm({
     setIsGameOver(false);
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     const playerName = inputRef.current.value.trim();
-    if (playerName) {
-      const updatedScores = [...scores]; // Create a copy of scores array
-      const levelScores = updatedScores.find((score) => score.level === level); // Find scores for the current level
-      if (levelScores) {
-        // Add the new player's score to the existing level scores
-        levelScores.players.push({ name: playerName, time: time });
-      } else {
-        // Create a new level entry with the player's score
-        updatedScores.push({
-          level: level,
-          players: [{ name: playerName, time: time }],
-        });
-      }
-      setScores(updatedScores);
+
+    const data = { name: playerName, time: time };
+
+    try {
+      addDoc(ref, data);
+    } catch (e) {
+      console.log(e);
     }
 
     setIsHighScoresSelected(true);

@@ -9,7 +9,7 @@ import { CharactersDisplay } from "./CharactersDisplay";
 import { HighScoreForm } from "./HighScoreForm";
 import { formatTime, padNumber } from "../utilities/helpers";
 
-export function Level({ image, level, scores, setScores }) {
+export function Level({ image, level }) {
   const [time, setTime] = useState(0);
   const [characterList, setCharacterList] = useState([
     { id: 1, name: "waldo", icon: waldoHead, isFound: false },
@@ -20,6 +20,7 @@ export function Level({ image, level, scores, setScores }) {
 
   const [clickedPosition, setClickedPosition] = useState({ x: 0, y: 0 });
   const [showClickedLayout, setShowClickedLayout] = useState(false);
+  const [characterNotFound, setCharacterNotFound] = useState(false);
   const intervalRef = useRef(null);
   const [isGameOver, setIsGameOver] = useState(false);
 
@@ -40,7 +41,6 @@ export function Level({ image, level, scores, setScores }) {
     );
 
     if (allCharactersFound) {
-      console.log("Game over");
       setIsGameOver(true);
       clearInterval(intervalRef.current);
     }
@@ -52,7 +52,6 @@ export function Level({ image, level, scores, setScores }) {
     setClickedPosition({ x: offsetX, y: offsetY });
     setShowClickedLayout(true);
 
-    // console.log("Clicked coordinates:", offsetX, offsetY);
     const levelPositions = POSITIONS.find(
       (position) => position.level === level
     );
@@ -76,15 +75,21 @@ export function Level({ image, level, scores, setScores }) {
         <div
           style={{
             position: "absolute",
-            top: "3%",
-            left: "50%",
+            top: "5%",
+            left: "47%",
             transform: "translate(-50%, -50%)",
             zIndex: 1,
           }}
+          className='flex flex-col items-center'
         >
           <p className='inline-block bg-primary text-white py-2 px-4 text-lg rounded-full opacity-75'>
             {formatTime(time)}
           </p>
+          {characterNotFound && (
+            <h1 className='bg-white py-2 px-4 text-lg rounded-lg'>
+              Not quite Try again
+            </h1>
+          )}
         </div>
         <div style={{ position: "relative" }} className='cursor-crosshair'>
           <img
@@ -112,14 +117,13 @@ export function Level({ image, level, scores, setScores }) {
             clickedPosition={clickedPosition}
             level={level}
             setShowClickedLayout={setShowClickedLayout}
+            setCharacterNotFound={setCharacterNotFound}
           />
         </div>
       )}
       {isGameOver && (
         <HighScoreForm
           time={time}
-          scores={scores}
-          setScores={setScores}
           setIsGameOver={setIsGameOver}
           level={level}
         />

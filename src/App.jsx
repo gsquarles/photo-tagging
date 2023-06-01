@@ -78,34 +78,7 @@ export const ScoreContext = createContext();
 function App() {
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [isLevelSelectPageShown, setIsLevelSelectPageShown] = useState(true);
-  const [scores, setScores] = useState([
-    {
-      level: "beach",
-      players: [
-        { name: "john", time: 24 },
-        { name: "bill", time: 107 },
-        { name: "pearl", time: 109 },
-        { name: "jen", time: 100 },
-        { name: "blue", time: 202 },
-      ],
-    },
-    {
-      level: "stadium",
-      players: [
-        { name: "john", time: 24 },
-        { name: "bill", time: 107 },
-        { name: "pearl", time: 10 },
-      ],
-    },
-    {
-      level: "space",
-      players: [
-        { name: "john", time: 24 },
-        { name: "bill", time: 107 },
-        { name: "pearl", time: 10 },
-      ],
-    },
-  ]);
+
   const [isHighScoresSelected, setIsHighScoresSelected] = useState(false);
 
   const handleChooseLevel = (id) => {
@@ -132,22 +105,9 @@ function App() {
         <LevelSelectPage handleChooseLevel={handleChooseLevel} />
       )}
       {selectedLevel && (
-        <Level
-          image={selectedLevel.image}
-          level={selectedLevel.level}
-          scores={scores}
-          setScores={setScores}
-        />
+        <Level image={selectedLevel.image} level={selectedLevel.level} />
       )}
-      {isHighScoresSelected && (
-        <Scoreboards
-          beachScores={scores.find((score) => score.level === "beach").players}
-          stadiumScores={
-            scores.find((score) => score.level === "stadium").players
-          }
-          spaceScores={scores.find((score) => score.level === "space").players}
-        />
-      )}
+      {isHighScoresSelected && <Scoreboards />}
     </ScoreContext.Provider>
   );
 }
